@@ -1,0 +1,9 @@
+This program provides the optimal value and optimal activites for an instance of the weighted activity problem.
+
+How to compile: make weighted_activity_DP, or just make
+How to run: ./weighted_activity_DP input.txt output.txt
+
+Each line of the input should follow the following format:
+start time,end time,weight
+
+The output file will contain the items included in the optimal solution, plus the optimal weight.
