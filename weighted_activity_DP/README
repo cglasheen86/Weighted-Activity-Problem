@@ -1,7 +1,11 @@
 This program provides the optimal value and optimal activites for an instance of the weighted activity problem.
 
-How to compile: make weighted_activity_DP, or just make
-How to run: ./weighted_activity_DP input.txt output.txt
+How to compile: 
+	type make
+How to run: 
+	DYNAMIC PROGRAMMING ALG: make dt
+	GREEDY ALG: make gt
+	*In which dt stands for dynamic test & gt for greedy test
 
 Each line of the input should follow the following format:
 start time,end time,weight
