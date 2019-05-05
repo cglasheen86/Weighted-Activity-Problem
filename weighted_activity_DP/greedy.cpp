@@ -10,7 +10,7 @@ struct activity {
 
 };
 
-vector<activity> act_profit(vector <activity> a) {
+vector<activity> greedy_sol(vector <activity> a) {
 	vector<activity> sol;
 	activity temp;
 	int j = 0;
@@ -41,10 +41,10 @@ int main(int argc, char* argv[]) {
 		act_list.push_back(temp_act);
 	
 	}
-	vector<activity> sol;
-	sol = act_profit(act_list);
-	for (int i = 0; i < sol.size(); i++) {
-		cout << sol[i].s_time << "," << sol[i].f_time << endl;
+	vector<activity> final_schedule;
+	final_schedule = greedy_sol(act_list);
+	for (int i = 0; i < final_schedule.size(); i++) {
+		cout << final_schedule[i].s_time << "," << final_schedule[i].f_time << endl;
 	}
 
 	input.close();
