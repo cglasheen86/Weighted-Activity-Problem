@@ -1,4 +1,4 @@
-all: gwas dpwas
+all: gwas
 
 dpwas: weighted_activity_DP.cpp
 	g++ dpwas.o -o dpwas
@@ -12,10 +12,12 @@ gwas: greedy.o
 greedy.o: greedy.cpp
 	g++ -g -c greedy.cpp
 
-gt:
-	./gwas greedy1.txt
+g1:
+	./gwas greedy1.txt greedy_out.txt
+g2:
+	./gwas greedy2.txt greedy_out.txt
 
-dt:
+d1:
 	./weighted_activity_DP input.txt output.txt
 
 c:
