@@ -4,7 +4,7 @@ How to compile:
 	type make
 How to run: 
 	DYNAMIC PROGRAMMING ALG: make dt
-	GREEDY ALG: make gt
+	GREEDY ALG: make gt1, make gt2...
 	*In which dt stands for dynamic test & gt for greedy test
 
 Each line of the input should follow the following format:
