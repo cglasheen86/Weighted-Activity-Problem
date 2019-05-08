@@ -76,15 +76,23 @@ int weighted_activity_Recursion(int num_items, vector<activity> activities){
     int x = weighted_activity_Recursion_Helper(activities.size(), activities, memo, conflicts);
     int y = x;
     int max_end = activities[activities.size()-1].end_time;
+    //cout << "-------" << endl;
+    //for(int i = 0; i < memo.size(); i++) cout << memo[i] << endl;
+    //cout << "--------" << endl;
     for(int i = 0; i < memo.size(); i++){
 	if(memo[i] == x && activities[i].end_time <= max_end){
+            //cout <<  x << endl;
+	    //cout << max_end << endl;
 	    max_end = activities[i].start_time;
 	    cout << activities[i].start_time << ", " << activities[i].end_time << ", " << activities[i].weight << endl;
 	    x -= activities[i].weight;
-	    if(i == 0) break;
-	    i = 0;
+	    if(x == 0){
+		break;
+	    }
+	    i = -1;
 	}
     }
+    cout << y << endl;
 }
 
 int weighted_activity_Recursion_Helper(int num_items, vector<activity> activities, vector<int> &memo, vector<int> conflicts){
