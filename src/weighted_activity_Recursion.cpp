@@ -71,9 +71,13 @@ int main(int argc, char** argv){
 
 int weighted_activity_Recursion(int num_items, vector<activity> activities){
     solution s;
+    int tot = 0;
     solution x = weighted_activity_Recursion_Helper(activities.size(), activities, s);
-    for(int i = 0; i < x.included.size(); i++) cout << x.included[i].start_time << ", " << x.included[i].end_time << ", " << x.included[i].weight << endl;
-    cout << x.max_val << endl;
+    for(int i = 0; i < x.included.size(); i++){
+	cout << x.included[i].start_time << ", " << x.included[i].end_time << ", " << x.included[i].weight << endl;
+	tot += x.included[i].weight;
+    }
+    cout << tot << endl;
 }
 
 solution weighted_activity_Recursion_Helper(int num_items, vector<activity> activities, solution &s){
