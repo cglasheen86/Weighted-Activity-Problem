@@ -20,7 +20,7 @@ struct activity{
 }activityComp;
 
 int weighted_activity_Recursion(int num_items, vector<activity> activities);
-int weighted_activity_Recursion_Helper(int num_items, vector<activity> activities, vector<int> memo, vector<int> conflicts);
+int weighted_activity_Recursion_Helper(int num_items, vector<activity> activities, vector<int> &memo, vector<int> conflicts);
 int find_conflict_index(vector<activity> activities, int num_items);
 void print_optimal_activities(vector<activity> activities, int max_index);
 
@@ -55,7 +55,7 @@ int main(int argc, char** argv){
 
     sort(activities.begin(), activities.end(), activityComp);
     //for(int i = 0; i < activities.size(); i++){
-        //cout << activities[i].start_time << ", " << activities[i].end_time << ", " << activities[i].weight << endl;
+    //    cout << activities[i].start_time << ", " << activities[i].end_time << ", " << activities[i].weight << endl;
     //}
     weighted_activity_Recursion(activities.size(), activities);
     high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now(); //Start time of algorithm execution
@@ -73,21 +73,34 @@ int weighted_activity_Recursion(int num_items, vector<activity> activities){
         memo.push_back(-1);
         conflicts.push_back(-1);
     }
-    cout << weighted_activity_Recursion_Helper(activities.size(), activities, memo, conflicts) << endl;
+    int x = weighted_activity_Recursion_Helper(activities.size(), activities, memo, conflicts);
+    int y = x;
+    int max_end = activities[activities.size()-1].end_time;
+    for(int i = 0; i < memo.size(); i++){
+	if(memo[i] == x && activities[i].end_time <= max_end){
+	    max_end = activities[i].start_time;
+	    cout << activities[i].start_time << ", " << activities[i].end_time << ", " << activities[i].weight << endl;
+	    x -= activities[i].weight;
+	    if(i == 0) break;
+	    i = 0;
+	}
+    }
 }
 
-int weighted_activity_Recursion_Helper(int num_items, vector<activity> activities, vector<int> memo, vector<int> conflicts){
+int weighted_activity_Recursion_Helper(int num_items, vector<activity> activities, vector<int> &memo, vector<int> conflicts){
     if(num_items == 1) return activities[0].weight;
     int weight_if_included = activities[num_items - 1].weight;
     if(conflicts[num_items - 1] == -1) conflicts[num_items - 1] = find_conflict_index(activities,num_items);
     int i = conflicts[num_items - 1];
     if(i != -1){
-	if(memo[i+1] == -1) memo[i+1] = weighted_activity_Recursion_Helper(i+1, activities, memo, conflicts);
-	weight_if_included += memo[i+1];
+	if(memo[i] == -1) memo[i] = weighted_activity_Recursion_Helper(i+1, activities, memo, conflicts);
+	weight_if_included += memo[i];
     }
     if(memo[num_items - 1] == -1) memo[num_items - 1] = weighted_activity_Recursion_Helper(num_items - 1, activities, memo, conflicts);
     int weight_if_excluded = memo[num_items - 1];
-    return max(weight_if_included, weight_if_excluded);
+    int opt = max(weight_if_included, weight_if_excluded);
+    memo[num_items - 1] = opt;
+    return opt;
 }
 
 int find_conflict_index(vector<activity> activities, int num_items){
