@@ -1,9 +1,9 @@
-all: gwas
+all: dpwas
 
-dpwas: weighted_activity_DP.cpp
-	g++ dpwas.o -o dpwas
+dpwas: weighted_activity_DP.o
+	g++ weighted_activity_DP.o -o dpwas
 
-dpwas.o: weighted_activity_DP.cpp
+weighted_activity_DP.o: weighted_activity_DP.cpp
 	g++ -g -c weighted_activity_DP.cpp
 
 gwas: greedy.o
@@ -18,7 +18,10 @@ g2:
 	./gwas greedy2.txt greedy_out.txt
 
 d1:
-	./weighted_activity_DP input.txt output.txt
-
+	./dpwas input.txt output.txt
+d2: 
+	./dpwas outy.txt output1.txt
+a:
+	./activities_generator
 c:
 	-rm -f *.o gwas dpwas
