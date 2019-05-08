@@ -120,6 +120,3 @@ int find_conflict_index(vector<activity> activities, int num_items){
     }
     return -1;
 }
-
-void print_optimal_activities(vector<activity> activities, int max_index){
-}
