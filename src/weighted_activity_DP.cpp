@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <string>
+#include <chrono>
 #include <fstream>
 
 using namespace std;
@@ -18,7 +19,7 @@ struct activity{
 
 int weighted_activity_DP(int num_items, vector<activity> activities);
 int find_conflict_index(vector<activity> activities);
-void print_optimal_activities(vector<activity> activities, int dp_array[], int max_index);
+void print_optimal_activities(vector<activity> activities, vector<activity> sol, int dp_array[], int max_index);
 
 int main(int argc, char** argv){
     if(argc < 2){
@@ -44,9 +45,9 @@ int main(int argc, char** argv){
 	output_file.open(argv[2], fstream::in | fstream::out | fstream::trunc);
 	
     sort(activities.begin(), activities.end(), activityComp);
-    for(int i = 0; i < activities.size(); i++){
-        cout << activities[i].start_time << ", " << activities[i].end_time << ", " << activities[i].weight << endl;
-    }
+   // for(int i = 0; i < activities.size(); i++){
+      //  cout << activities[i].start_time << ", " << activities[i].end_time << ", " << activities[i].weight << endl;
+   // }
 	
 	cout << "Total Weight: " << weighted_activity_DP(activities.size(), activities) << endl;
 	return 0;
@@ -61,38 +62,54 @@ int latest_non_conflict(vector<activity> a, int num_act) {
 	} return -1;
 }
 int weighted_activity_DP(int num_items, vector<activity> activities){
+	vector<activity> solution;
+
     int dp_table[num_items + 1] = { 0 };
 	
+
     activity empty_activity;
 	empty_activity.weight = 0;
 	activities.insert(activities.begin(), empty_activity);
-	//cout << dp_table[0];
 	
 
 	for (int i = 1; i < num_items + 1; i++) {
 		int x = latest_non_conflict(activities, i);
 		int curr_weight = activities[i].weight;
 		if (x != -1) { curr_weight += dp_table[x]; }
-		
+		if (curr_weight > dp_table[i-1]) {
+			
+		}
+
 		dp_table[i] = max(curr_weight, dp_table[i - 1]);
+		solution.push_back(activities[i]);
+		//solution.push_back(activities[i]);
+
+		
 	}
-    print_optimal_activities(activities, dp_table, num_items);
+    print_optimal_activities(activities, solution, dp_table, num_items);
     return dp_table[num_items];
 }
 
-void print_optimal_activities(vector<activity> activities, int dp_table[], int max_index) {
+void print_optimal_activities(vector<activity> activities, vector<activity> sol, int dp_table[], int max_index) {
+
 	int optimal_value = dp_table[max_index];
-	vector<int> sol_idxs;
-	int dp_table_size = max_index + 1;
-
-	for (int i = max_index; i >= 0; i--) {
-		if (dp_table[i] > dp_table[i - 1]) {
-			cout << "Item : " << i << endl;
-			sol_idxs.push_back(i);
-
-		}
+	cout << "________________________" << endl;
+   	for(int i = 1; i <= max_index; i++){
+		
+		if(dp_table[i] == optimal_value){
+		    cout << "Activity " << i << ": " << endl;
+			cout << activities[i].start_time << "," <<activities[i].end_time << "," << activities[i].weight<<endl;
+			cout << "________________________" << endl;
+		    optimal_value -= activities[i].weight;
+	    	max_index = i-1;
+	    	i = 1;
+		}	
 	}
-
-
 }
+
+
+
+
+
+
 	
